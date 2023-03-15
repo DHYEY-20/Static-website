@@ -1,0 +1,199 @@
+<html>
+<head>
+  <style>
+    p:nth-child(even) {
+      color: rgb(236, 15, 229);
+      ;
+    }
+
+    p:nth-child(odd) {
+      color: rgb(163, 32, 163);
+    }
+
+    body {
+      background-color: ivory;
+    }
+
+    legend {
+      color: maroon;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 align='center'>
+    <font color="maroon">Invoice</font>
+  </h1>
+  <script>
+    function validateform() {
+      var n = document.orderform.name.value;
+      var e = document.orderform.email.value;
+      var atposition = e.indexOf("@");
+      var dotposition = e.lastIndexOf(".");
+      var p = document.orderform.pin.value;
+      var c = document.orderform.cnum.value;
+      var cty = document.orderform.city.value;
+      var add = document.orderform.address.value;
+      var prc = document.orderform.pc.value;
+      var q = document.orderform.qty.value;
+      var dadd = document.orderform.daddress.value;
+      var vcy = document.getElementById("cy").value;
+      var vsn = document.getElementById("sn").value;
+      var vmf = document.getElementById("mf").checked;
+      var vss = document.getElementById("ss").checked;
+      var vaw = document.getElementById("aw").checked;
+      var vn = /^[A-Za-z ]+$/;
+      var vcn = /^[6-9]\d{9}$/;
+      if (n == null || n == "" || !n.match(vn))                                                             
+      {
+        alert("Please enter valid name!");
+        return false;
+      }
+      else if (atposition < 1 || dotposition < atposition + 2 || dotposition + 2 >= e.length) {
+        alert("Please enter a valid e-mail address \n atpostion:" + atposition + "\n dotposition:" + dotposition);
+        return false;
+      }
+      else if (c == null || c.length < 10 || c.length > 10 || !vcn.test(c))                             
+      {
+        alert("Please enter a valid contact number (of 10 digits)!");
+        return false;
+      }
+      else if (vcy == "default") {
+        alert("Please select a Country name!");
+        return false;
+      }
+      else if (vsn == "default") {
+        alert("Please select a State name!");
+        return false;
+      }
+      else if (cty == null || cty == "") {
+        alert("Please enter your city name!");
+        return false;
+      }
+      else if (add == null || add == "") {
+        alert("Please enter your address!");
+        return false;
+      }
+      else if (p.length < 6 || p.length > 6 || p == null) {
+        alert("Please enter a valid Pin code (of 6 digits)!");
+        return false;
+      }
+      else if (prc.length < 5 || prc.length > 5) {
+        alert("Please enter a valid Product-code (of 5 digits)!");
+        return false;
+      }
+      else if (q == null || q == "") {
+        alert("Please enter how much quantity of product you want!");
+        return false;
+      }
+      else if (vmf == "" && vss == "" && vaw == "") {
+        alert("Please click on any specific delivery day!");
+        return false;
+      }
+      else if (dadd == null || dadd == "") {
+        alert("Please enter your  product's delivery address!");
+        return false;
+      }
+      else {
+        alert("Click 'OK' for placing your order");
+        return true;
+      }
+    }
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
+  <form name="orderform"  ng-app="" method="post" action="thanking.html" onsubmit=" return validateform()">
+    <fieldset>
+      <legend><strong> Customer Information </strong></legend>
+      <p>
+        <label>
+          Name : <input type="text" name="name" size="30" autofocus />
+        </label>
+      </p>
+      <p>
+        <label>
+          E-mail id : <input type="email" name="email" size="30" />
+        </label>
+      </p>
+      <p>
+        <label>
+          Contact no. : <input type="number" name="cnum" size="10" />
+        </label>
+      </p>
+      <p>
+        <label>
+          Country :
+        </label>
+        <select name="country" id="cy">
+          <option selected=" " value="default">Please select country name</option>
+          <option value="aus">Australia</option>
+          <option value="ame">America</option>
+          <option value="ind">India</option>
+          <option value="russ">Russia</option>
+        </select>
+      </p>
+      <p>
+        <label>
+          State :
+        </label>
+        <select name="state" id="sn">
+          <option selected=" " value="default">Please select state name</option>
+          <option value="mp">Madhya Pradesh</option>
+          <option value="rj">Rajasthan</option>
+          <option value="guj">Gujarat</option>
+          <option value="mh">Maharastra</option>
+        </select>
+      </p>
+      <p>
+        <label>
+          City : <input type="text" name="city" size="20" />
+        </label>
+      </p>
+      <p>
+        <label>
+          Address : <textarea name="address" cols="30" rows="3" ng-model="add1" ></textarea>
+        </label>
+      </p>
+      <p>
+        <label>
+          Pin code : <input type="number" name="pin" maxlength="6" placeholder="Zip or Pin code" />
+        </label>
+      </p>
+    </fieldset><br>
+    <fieldset>
+      <legend><strong>Product & Delivery Details</strong></legend>
+      <p align="center">
+        <font color="red">Sorry for inconvenience!!</font>
+      </p>
+      <p align="center">
+        <font color="red">For just now Cash On Delivery option is only available. Because we have some problem in our
+          online payment gateway.</font>
+      </p>
+      <p>
+        <script>  document.getElementById("result").innerHTML=window.localStorage.getItem("pcvalue");</script>
+        <label>
+          Product-code : <input type="text" name="pc"  id="result" maxlength="5" autofocus ></input>
+        </label>
+      </p>
+      <p>
+        <label>
+          Quantity : <input type="text" name="qty" maxlength="1" />
+        </label>
+      </p>
+      <p>
+        <label>
+          Delivery(on any specific day) : <input type="radio" name="da" id="mf">Mon-Fri
+          <input type="radio" name="da" id="ss">Sat-Sun
+          <input type="radio" name="da" id="aw">At any day of the week
+        </label>
+      </p>
+      <p>
+        <label>
+          Delivery Address : <textarea name="daddress" cols="30" rows="3">{{msg}}</textarea>
+        </label>
+        <input type="radio" ng-click="msg = add1">Same as above address
+      </p>
+    </fieldset><br>
+    <input type="submit" name="submit" value="Place order">
+  </form>
+</body>
+</html>
